@@ -7,11 +7,32 @@
   border-bottom: 2px solid #fa8354;
 }
 
+#calculate-retirement {
+  background-color: #fa8354;
+}
+
 #calcular {
   background-color: #fa8354;
   font-weight: 600;
   font-size: larger;
 }
+
+#details_container {
+  background-color: #f8662c;
+}
+
+.accordion-button {
+  cursor: pointer;
+}
+
+.accordion-content {
+  display: none;
+}
+
+.accordion-content.show {
+  display: block;
+}
+
 body.dark {
   background-color: #0c1a2e;
   color: #fff;

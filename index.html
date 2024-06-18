@@ -100,15 +100,27 @@
               </select>
             </div>
             <button
-              id="calcular"
+              id="calculate-retirement"
               type="submit"
-              class="w-full p-2 mt-4 text-white rounded highlight"
-              onclick="calculateRetirement()"
+              class="w-full p-2 mt-4 bg-orange-500 text-white rounded highlight"
             >
               Calcular
             </button>
           </form>
           <div id="result" class="mt-4 p-4 rounded"></div>
+          <div id="accordion" class="mt-4">
+            <button
+              class="accordion-button w-full p-2 mt-4 bg-orange-500 text-white rounded highlight"
+            >
+              Mostrar Detalhes
+            </button>
+            <div
+              class="accordion-content hidden p-4 rounded"
+              id="details_container"
+            >
+              <div id="details"></div>
+            </div>
+          </div>
         </div>
         <div>
           <h1 class="text-2xl font-bold mb-4">
@@ -142,10 +154,9 @@
               />
             </div>
             <button
-              id="calcular"
+              id="calculate-investment"
               type="submit"
-              class="w-full p-2 mt-4 text-white rounded highlight"
-              onclick="calculateInvestment()"
+              class="w-full p-2 mt-4 bg-orange-500 text-white rounded highlight"
             >
               Calcular
             </button>

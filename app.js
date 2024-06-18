@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const themeToggle = document.getElementById("theme-toggle");
   const body = document.body;
   const themeIcon = document.getElementById("theme-icon");
+  const accordionButton = document.querySelector(".accordion-button");
+  const accordionContent = document.querySelector(".accordion-content");
 
   inputs.forEach((input) => {
     input.addEventListener("input", function () {
@@ -47,6 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
       body.classList.add("dark");
       themeIcon.textContent = "wb_sunny";
     }
+  });
+
+  accordionButton.addEventListener("click", function () {
+    accordionContent.classList.toggle("show");
   });
 });
 
@@ -101,44 +107,84 @@ function calculateRetirement() {
 
   let totalAmount = initialAmount;
   const months = duration * 12;
+  let details = [];
 
-  if (interestType === "monthly") {
-    for (let i = 0; i < months; i++) {
-      totalAmount += monthlyAmount;
-      totalAmount *= 1 + interestRate;
-    }
-  } else if (interestType === "annual") {
-    const monthlyInterestRate = interestRate / 12;
-    for (let i = 0; i < months; i++) {
-      totalAmount += monthlyAmount;
-      totalAmount *= 1 + monthlyInterestRate;
-    }
+  for (let i = 0; i < months; i++) {
+    const aporte = i === 0 ? initialAmount + monthlyAmount : monthlyAmount;
+    const previousAmount = totalAmount;
+    totalAmount += i === 0 ? monthlyAmount : aporte;
+    const interest =
+      totalAmount * (interestRate / (interestType === "annual" ? 12 : 1));
+    totalAmount += interest;
+    details.push({
+      month: i + 1,
+      aporte: aporte.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }),
+      juros: interest.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }),
+      total: totalAmount.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }),
+    });
   }
 
   const monthlyReturn = totalAmount * 0.01;
 
   document.getElementById("result").innerHTML = `
-      <p class="montserrat">Valor Total: <strong>${totalAmount.toLocaleString(
-        "pt-BR",
-        {
-          style: "currency",
-          currency: "BRL",
-        }
-      )}</strong></p>
-      <p class="montserrat">Rendimento Mensal (1% ao mês): <strong>${monthlyReturn.toLocaleString(
-        "pt-BR",
-        {
-          style: "currency",
-          currency: "BRL",
-        }
-      )}</strong></p>
-      <p class="montserrat">Com este valor, você terá um rendimento mensal médio de <strong>${monthlyReturn.toLocaleString(
-        "pt-BR",
-        {
-          style: "currency",
-          currency: "BRL",
-        }
-      )}</strong>.</p>`;
+    <p class="montserrat">Valor Total: <strong>${totalAmount.toLocaleString(
+      "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL",
+      }
+    )}</strong></p>
+    <p class="montserrat">Rendimento Mensal (1% ao mês): <strong>${monthlyReturn.toLocaleString(
+      "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL",
+      }
+    )}</strong></p>
+    <p class="montserrat">Com este valor, você terá um rendimento mensal médio de <strong>${monthlyReturn.toLocaleString(
+      "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL",
+      }
+    )}</strong>.</p>`;
+
+  let detailsHTML = `
+    <table class="table-auto w-full">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Mês</th>
+          <th class="px-4 py-2">Aporte</th>
+          <th class="px-4 py-2">Juros</th>
+          <th class="px-4 py-2">Valor Total</th>
+        </tr>
+      </thead>
+      <tbody>`;
+
+  details.forEach((detail) => {
+    detailsHTML += `
+      <tr>
+        <td class="border px-4 py-2">${detail.month}</td>
+        <td class="border px-4 py-2">${detail.aporte}</td>
+        <td class="border px-4 py-2">${detail.juros}</td>
+        <td class="border px-4 py-2">${detail.total}</td>
+      </tr>`;
+  });
+
+  detailsHTML += `
+      </tbody>
+    </table>`;
+
+  document.getElementById("details").innerHTML = detailsHTML;
 }
 
 function calculateInvestment() {
