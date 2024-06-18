@@ -1,0 +1,95 @@
+.montserrat {
+  font-family: "Inter";
+  letter-spacing: 0.3px;
+}
+#calcular {
+  background-color: #fa8354;
+  font-weight: 600;
+  font-size: larger;
+}
+body.dark {
+  background-color: #0c1a2e;
+  color: #fff;
+}
+body.light {
+  background-color: #fff;
+  color: #333;
+}
+.dark .highlight {
+  background-color: #f5f5f5;
+  color: #333;
+}
+.light .highlight {
+  background-color: #ffcccb;
+  color: #333;
+}
+input {
+  font-family: "Montserrat";
+  font-weight: 500;
+}
+input::placeholder {
+  color: rgba(51, 51, 51, 0.76);
+}
+
+#result {
+  background-color: #192f4d;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+label {
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #f8662c;
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+.icon {
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+body {
+  font-family: "inter", sans-serif;
+  font-weight: 500;
+}
