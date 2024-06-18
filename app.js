@@ -1,17 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
   const retirementForm = document.getElementById("retirement-form");
-  const investmentForm = document.getElementById("investment-form");
   const inputs = document.querySelectorAll('input[type="number"]');
   const currencyInputs = document.querySelectorAll(".currency-input");
-  const themeToggle = document.getElementById("theme-toggle");
-  const body = document.body;
-  const themeIcon = document.getElementById("theme-icon");
   const accordionButton = document.querySelector(".accordion-button");
   const accordionContent = document.querySelector(".accordion-content");
 
   inputs.forEach((input) => {
     input.addEventListener("input", function () {
-      // Remover sinais de negativo e impedir valores negativos
       this.value = this.value.replace(/[^0-9.]/g, "");
       if (this.value < 0) {
         this.value = 0;
@@ -29,25 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     if (validateForm(retirementForm)) {
       calculateRetirement();
-    }
-  });
-
-  investmentForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    if (validateForm(investmentForm)) {
-      calculateInvestment();
-    }
-  });
-
-  themeToggle.addEventListener("change", function () {
-    if (this.checked) {
-      body.classList.remove("dark");
-      body.classList.add("light");
-      themeIcon.textContent = "nightlight_round";
-    } else {
-      body.classList.remove("light");
-      body.classList.add("dark");
-      themeIcon.textContent = "wb_sunny";
     }
   });
 
@@ -106,6 +82,7 @@ function calculateRetirement() {
   const interestType = document.getElementById("interest-type").value;
 
   let totalAmount = initialAmount;
+  let totalInvested = initialAmount; // Inicializa o total investido com o valor inicial
   const months = duration * 12;
   let details = [];
 
@@ -113,6 +90,7 @@ function calculateRetirement() {
     const aporte = i === 0 ? initialAmount + monthlyAmount : monthlyAmount;
     const previousAmount = totalAmount;
     totalAmount += i === 0 ? monthlyAmount : aporte;
+    totalInvested += i === 0 ? monthlyAmount : aporte; // Adiciona o aporte ao total investido
     const interest =
       totalAmount * (interestRate / (interestType === "annual" ? 12 : 1));
     totalAmount += interest;
@@ -123,6 +101,10 @@ function calculateRetirement() {
         currency: "BRL",
       }),
       juros: interest.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }),
+      totalInvestido: totalInvested.toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
       }),
@@ -159,66 +141,34 @@ function calculateRetirement() {
     )}</strong>.</p>`;
 
   let detailsHTML = `
-    <table class="table-auto w-full">
-      <thead>
-        <tr>
-          <th class="px-4 py-2">Mês</th>
-          <th class="px-4 py-2">Aporte</th>
-          <th class="px-4 py-2">Juros</th>
-          <th class="px-4 py-2">Valor Total</th>
-        </tr>
-      </thead>
-      <tbody>`;
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full text-xs md:text-sm">
+        <thead>
+          <tr>
+            <th class="px-1 py-1 md:px-4 md:py-2">Mês</th>
+            <th class="px-1 py-1 md:px-4 md:py-2">Aporte</th>
+            <th class="px-1 py-1 md:px-4 md:py-2">Juros</th>
+            <th class="px-1 py-1 md:px-4 md:py-2">Total Investido</th>
+            <th class="px-1 py-1 md:px-4 md:py-2">Total</th>
+          </tr>
+        </thead>
+        <tbody>`;
 
   details.forEach((detail) => {
     detailsHTML += `
-      <tr>
-        <td class="border px-4 py-2">${detail.month}</td>
-        <td class="border px-4 py-2">${detail.aporte}</td>
-        <td class="border px-4 py-2">${detail.juros}</td>
-        <td class="border px-4 py-2">${detail.total}</td>
-      </tr>`;
+          <tr>
+            <td class="border px-1 py-1 md:px-4 md:py-2">${detail.month}</td>
+            <td class="border px-1 py-1 md:px-4 md:py-2">${detail.aporte}</td>
+            <td class="border px-1 py-1 md:px-4 md:py-2">${detail.juros}</td>
+            <td class="border px-1 py-1 md:px-4 md:py-2">${detail.totalInvestido}</td>
+            <td class="border px-1 py-1 md:px-4 md:py-2">${detail.total}</td>
+          </tr>`;
   });
 
   detailsHTML += `
-      </tbody>
-    </table>`;
+        </tbody>
+      </table>
+    </div>`;
 
   document.getElementById("details").innerHTML = detailsHTML;
-}
-
-function calculateInvestment() {
-  const desiredIncome = parseFloat(
-    document
-      .getElementById("desired-income")
-      .value.replace(/[R$\s.]/g, "")
-      .replace(",", ".")
-  );
-  const yearsUntilRetirement = parseFloat(
-    document.getElementById("years-until-retirement").value
-  );
-
-  const monthsUntilRetirement = yearsUntilRetirement * 12;
-  const monthlyInterestRate = 0.01; // 1% ao mês
-
-  // Fórmula do Valor Presente de uma anuidade
-  const presentValueAnnuity =
-    (desiredIncome / monthlyInterestRate) *
-    (1 - Math.pow(1 + monthlyInterestRate, -monthsUntilRetirement));
-
-  // Fórmula do Valor Futuro de uma anuidade
-  const monthlyInvestment =
-    presentValueAnnuity /
-    ((Math.pow(1 + monthlyInterestRate, monthsUntilRetirement) - 1) /
-      monthlyInterestRate);
-
-  document.getElementById(
-    "investment-result"
-  ).innerHTML = `<p class="montserrat">Investimento Mensal Necessário: <strong>${monthlyInvestment.toLocaleString(
-    "pt-BR",
-    {
-      style: "currency",
-      currency: "BRL",
-    }
-  )}</strong></p>`;
 }
