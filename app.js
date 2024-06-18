@@ -25,12 +25,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   retirementForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    calculateRetirement();
+    if (validateForm(retirementForm)) {
+      calculateRetirement();
+    }
   });
 
   investmentForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    calculateInvestment();
+    if (validateForm(investmentForm)) {
+      calculateInvestment();
+    }
   });
 
   themeToggle.addEventListener("change", function () {
@@ -57,6 +61,24 @@ function formatCurrencyInput(input) {
     value / 100
   );
   input.value = formattedValue;
+}
+
+function validateForm(form) {
+  let isValid = true;
+  const inputs = form.querySelectorAll("input");
+  inputs.forEach((input) => {
+    if (input.value === "" || input.value == null) {
+      isValid = false;
+      input.classList.add("border-red-500");
+    } else {
+      input.classList.remove("border-red-500");
+    }
+  });
+
+  if (!isValid) {
+    alert("Por favor, preencha todos os campos.");
+  }
+  return isValid;
 }
 
 function calculateRetirement() {
@@ -146,11 +168,11 @@ function calculateInvestment() {
 
   document.getElementById(
     "investment-result"
-  ).innerText = `Investimento Mensal Necessário: ${monthlyInvestment.toLocaleString(
+  ).innerHTML = `<p class="montserrat">Investimento Mensal Necessário: <strong>${monthlyInvestment.toLocaleString(
     "pt-BR",
     {
       style: "currency",
       currency: "BRL",
     }
-  )}`;
+  )}</strong></p>`;
 }

@@ -2,6 +2,11 @@
   font-family: "Inter";
   letter-spacing: 0.3px;
 }
+#result p strong,
+#investment-result p strong {
+  border-bottom: 2px solid #fa8354;
+}
+
 #calcular {
   background-color: #fa8354;
   font-weight: 600;
@@ -32,6 +37,10 @@ input::placeholder {
 }
 
 #result {
+  background-color: #192f4d;
+}
+
+#investment-result {
   background-color: #192f4d;
 }
 input:focus,
