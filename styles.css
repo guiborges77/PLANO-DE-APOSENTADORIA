@@ -41,6 +41,7 @@ label {
   color: #192f4d;
   font-weight: 600;
   font-size: 1.1rem;
+  margin-bottom: 3rem;
 }
 
 .accordion-button {
@@ -106,4 +107,26 @@ label {
     padding: 4px;
     font-size: 0.75rem;
   }
+}
+
+.chart-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.download-button {
+  font-family: "inter", sans-serif;
+  background-color: #fd6f37;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #e65c25;
 }

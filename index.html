@@ -110,8 +110,21 @@
             <div id="details"></div>
           </div>
         </div>
+        <div class="chart-container" style="position: relative; height: 40vh">
+          <canvas id="myChart"></canvas>
+        </div>
+        <button
+          id="download-chart"
+          class="download-button mt-4 p-2 bg-orange-500 text-white rounded"
+        >
+          Download Gráfico
+        </button>
       </div>
     </div>
-    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.0.0"></script>
+
+    <script src="chart.js"></script>
+    <script src="inputs.js"></script>
   </body>
 </html>
