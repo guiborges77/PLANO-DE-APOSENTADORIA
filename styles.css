@@ -86,7 +86,8 @@ label {
 
 .table-auto th,
 .table-auto td {
-  text-align: left;
+  vertical-align: middle;
+  text-align: center;
   padding: 8px;
   white-space: nowrap;
 }
@@ -166,6 +167,32 @@ label {
   animation: slideDown 0.5s forwards;
 }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.accordion-content.hide {
+  animation: slideUp 0.5s forwards;
+  max-height: 0;
+  opacity: 0;
+}
+
+@keyframes slideUp {
+  from {
+    max-height: 1000px;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
 @keyframes slideDown {
   from {
     max-height: 0;
@@ -203,8 +230,17 @@ label {
 
   .table-auto th,
   .table-auto td {
+    vertical-align: middle;
+    text-align: center;
     padding: 6px;
     font-size: 10px;
+  }
+
+  /* Increase the size of the table on mobile */
+  .table-auto th,
+  .table-auto td {
+    font-size: 14px;
+    padding: 10px;
   }
 }
 

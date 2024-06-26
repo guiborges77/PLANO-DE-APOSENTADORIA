@@ -43,7 +43,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   
     accordionButton.addEventListener("click", function () {
-      accordionContent.classList.toggle("show");
+      if (accordionContent.classList.contains("show")) {
+        accordionContent.classList.remove("show");
+        accordionContent.classList.add("hide");
+        accordionContent.addEventListener("animationend", () => {
+          if (accordionContent.classList.contains("hide")) {
+            accordionContent.style.display = "none";
+          }
+        }, { once: true });
+      } else {
+        accordionContent.classList.remove("hide");
+        accordionContent.classList.add("show");
+        accordionContent.style.display = "block";
+      }
     });
   
     document.getElementById("download-chart").addEventListener("click", function () {
@@ -108,10 +120,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let isValid = true;
     const inputs = form.querySelectorAll("input");
     inputs.forEach((input) => {
+      const inputValue = parseFloat(input.value.replace(/[R$\s.]/g, "").replace(",", "."));
       if (
-        input.value === "" ||
-        input.value == null ||
-        parseFloat(input.value.replace(/[R$\s.]/g, "").replace(",", ".")) <= 0
+        (input.id !== "initial-amount" && (input.value === "" || input.value == null || inputValue <= 0)) ||
+        (input.id === "initial-amount" && (input.value !== "" && inputValue < 0))
       ) {
         isValid = false;
         input.classList.add("border-red-500");
