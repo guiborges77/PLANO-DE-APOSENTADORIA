@@ -33,14 +33,13 @@
         <h1 class="text-2xl font-bold mb-4">Plano de Aposentadoria</h1>
         <form id="retirement-form" class="space-y-4">
           <div>
-            <label for="initial-amount" class="block mb-2"
-              >Valor Inicial do Investimento</label
-            >
+            <label for="initial-amount" class="block mb-2">Valor Inicial do Investimento</label>
             <input
               min="0"
               type="text"
               id="initial-amount"
               class="w-full p-2 highlight rounded currency-input"
+              inputmode="numeric"
               placeholder="R$ 0,00"
               required
             />
@@ -52,6 +51,7 @@
               type="text"
               id="monthly-amount"
               class="w-full p-2 highlight rounded currency-input"
+              inputmode="numeric"
               placeholder="R$ 0,00"
               required
             />
@@ -63,19 +63,19 @@
               type="number"
               id="duration"
               class="w-full p-2 highlight rounded"
+              inputmode="numeric"
               placeholder="Duração"
               required
             />
           </div>
           <div>
-            <label for="interest-rate" class="block mb-2"
-              >Taxa de Juros (%)</label
-            >
+            <label for="interest-rate" class="block mb-2">Taxa de Juros (%)</label>
             <input
               min="0"
               type="number"
               id="interest-rate"
               class="w-full p-2 highlight rounded"
+              inputmode="numeric"
               placeholder="Taxa de Juros"
               required
             />
@@ -100,6 +100,7 @@
           <button
             id="details_container_button"
             class="accordion-button w-full p-2 mt-4 bg-orange-500 text-white rounded highlight"
+            style="display: none;"
           >
             Mostrar Detalhes
           </button>
@@ -116,6 +117,7 @@
         <button
           id="download-chart"
           class="download-button mt-4 p-2 bg-orange-500 text-white rounded"
+          style="display: none;"
         >
           Download Gráfico
         </button>
@@ -123,8 +125,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.0.0"></script>
-
-    <script src="chart.js"></script>
     <script src="inputs.js"></script>
+    <script src="chart.js"></script>
   </body>
 </html>

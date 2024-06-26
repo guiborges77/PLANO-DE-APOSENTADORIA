@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const currencyInputs = document.querySelectorAll(".currency-input");
     const accordionButton = document.querySelector(".accordion-button");
     const accordionContent = document.querySelector(".accordion-content");
+    const resultContainer = document.getElementById("result");
+    const detailsContainerButton = document.getElementById("details_container_button");
+    const downloadChartButton = document.getElementById("download-chart");
+  
+    loadFormData();
+  
+    // Inicialmente, esconde os botões de mostrar detalhes e download de gráfico
+    detailsContainerButton.style.display = "none";
+    downloadChartButton.style.display = "none";
   
     inputs.forEach((input) => {
       input.addEventListener("input", function () {
@@ -24,6 +33,12 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       if (validateForm(retirementForm)) {
         calculateRetirement();
+        showSuccessMessage("Cálculo realizado com sucesso!");
+        saveFormData();
+        detailsContainerButton.style.display = "block"; // Mostra o botão após o cálculo
+        downloadChartButton.style.display = "block"; // Mostra o botão de download após o cálculo
+      } else {
+        showErrorMessage("Por favor, preencha todos os campos corretamente.");
       }
     });
   
@@ -37,6 +52,45 @@ document.addEventListener("DOMContentLoaded", function () {
       link.download = "grafico_aposentadoria.png";
       link.click();
     });
+  
+    function showSuccessMessage(message) {
+      resultContainer.innerHTML = `<p class="success-message">${message}</p>`;
+      resultContainer.classList.add("show");
+      setTimeout(() => {
+        resultContainer.classList.remove("show");
+      }, 3000);
+    }
+  
+    function showErrorMessage(message) {
+      resultContainer.innerHTML = `<p class="error-message">${message}</p>`;
+      resultContainer.classList.add("show");
+      setTimeout(() => {
+        resultContainer.classList.remove("show");
+      }, 3000);
+    }
+  
+    function saveFormData() {
+      const formData = {
+        initialAmount: document.getElementById("initial-amount").value,
+        monthlyAmount: document.getElementById("monthly-amount").value,
+        duration: document.getElementById("duration").value,
+        interestRate: document.getElementById("interest-rate").value,
+        interestType: document.getElementById("interest-type").value,
+      };
+      localStorage.setItem("retirementFormData", JSON.stringify(formData));
+    }
+  
+    function loadFormData() {
+      const savedData = localStorage.getItem("retirementFormData");
+      if (savedData) {
+        const formData = JSON.parse(savedData);
+        document.getElementById("initial-amount").value = formData.initialAmount;
+        document.getElementById("monthly-amount").value = formData.monthlyAmount;
+        document.getElementById("duration").value = formData.duration;
+        document.getElementById("interest-rate").value = formData.interestRate;
+        document.getElementById("interest-type").value = formData.interestType;
+      }
+    }
   });
   
   function formatCurrencyInput(input) {
@@ -66,9 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   
-    if (!isValid) {
-      alert("Por favor, preencha todos os campos corretamente.");
-    }
     return isValid;
   }
   

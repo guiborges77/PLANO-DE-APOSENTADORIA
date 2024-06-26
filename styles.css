@@ -118,8 +118,8 @@ label {
   font-family: "inter", sans-serif;
   background-color: #fd6f37;
   color: white;
-  padding: 10px 20px;
-  font-size: 1.2rem;
+  padding: 3px 7px;
+  font-size: 15px;
   font-weight: 500;
   border: none;
   border-radius: 5px;
@@ -129,4 +129,88 @@ label {
 
 .download-button:hover {
   background-color: #e65c25;
+}
+
+/* styles.css */
+
+/* Feedback messages */
+.success-message {
+  color: #28a745;
+  font-weight: bold;
+  text-align: center;
+}
+
+.error-message {
+  color: #dc3545;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Animations */
+#result.show,
+#details_container.show {
+  animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.accordion-content.show {
+  display: block;
+  animation: slideDown 0.5s forwards;
+}
+
+@keyframes slideDown {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+/* Responsiveness */
+.chart-container {
+  position: relative;
+  height: 40vh;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 50vh;
+  }
+
+  .table-auto th,
+  .table-auto td {
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    height: 60vh;
+  }
+
+  .table-auto th,
+  .table-auto td {
+    padding: 6px;
+    font-size: 10px;
+  }
+}
+
+/* UI Improvements */
+.icon {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
 }
