@@ -68,6 +68,9 @@ function displayGraph(details) {
           ticks: {
             maxRotation: 0,
             minRotation: 0,
+            font: {
+              family: "Inter", // Define the font family to Inter
+            },
           },
         },
         y: {
@@ -77,6 +80,15 @@ function displayGraph(details) {
           title: {
             display: true,
             text: "Valor (R$)",
+            font: {
+              family: "Inter",
+              size: 14, // Increase the font size
+            },
+          },
+          ticks: {
+            font: {
+              family: "Inter", // Define the font family to Inter
+            },
           },
         },
         y1: {
@@ -86,9 +98,18 @@ function displayGraph(details) {
           title: {
             display: true,
             text: "Juros (R$)",
+            font: {
+              family: "Inter",
+              size: 14, // Increase the font size
+            },
           },
           grid: {
             drawOnChartArea: false,
+          },
+          ticks: {
+            font: {
+              family: "Inter", // Define the font family to Inter
+            },
           },
         },
       },
@@ -98,6 +119,10 @@ function displayGraph(details) {
           labels: {
             boxWidth: 15,
             boxHeight: 15,
+            font: {
+              family: "Inter", // Define the font family to Inter
+              size: 14, // Increase the font size
+            },
           },
         },
         tooltip: {
