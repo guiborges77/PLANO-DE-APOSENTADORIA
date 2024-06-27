@@ -312,7 +312,7 @@ select {
 
 .result-block p {
   text-align: center;
-  font-size: 14px; /* Tamanho do label */
+  font-size: 16px; /* Tamanho do label */
 }
 
 .result-block strong {
@@ -335,4 +335,26 @@ select {
     text-align: center;
     font-size: 18px; /* Tamanho do label */
   }
+}
+
+.chart-label {
+  font-family: "inter" sans-serif;
+  margin-bottom: 10px; /* Espaço entre os labels */
+  font-size: 1rem; /* Tamanho da fonte dos labels */
+}
+
+.chart-label.total {
+  color: rgba(75, 192, 192, 1); /* Cor do label "Valor Total" */
+}
+
+.chart-label.investido {
+  color: rgba(153, 102, 255, 1); /* Cor do label "Total Investido" */
+}
+
+.chart-label.juros-mes {
+  color: rgb(255, 64, 64); /* Cor do label "Juros Acumulados (Mês)" */
+}
+
+.chart-label.juros-totais {
+  color: rgba(54, 162, 235, 1); /* Cor do label "Juros Totais Acumulados" */
 }

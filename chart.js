@@ -126,6 +126,36 @@ function displayGraph(details) {
               },
               padding: isMobile ? 10 : 0,
             },
+            // Adicione as classes CSS aos labels
+            generateLabels: function (chart) {
+              const labels =
+                Chart.defaults.plugins.legend.labels.generateLabels(chart);
+              labels.forEach((label, index) => {
+                switch (label.text) {
+                  case "Valor Total":
+                    label.text = "Valor Total";
+                    label.fillStyle = "#4bc0c0";
+                    break;
+                  case "Total Investido":
+                    label.text = "Total Investido";
+                    label.fillStyle = "#9966ff";
+                    break;
+                  case "Juros Acumulados (Mês)":
+                    label.text = "Juros Acumulados (Mês)";
+                    label.fillStyle = "#ff9f40";
+                    break;
+                  case "Juros Totais Acumulados":
+                    label.text = "Juros Totais Acumulados";
+                    label.fillStyle = "#36a2eb";
+                    break;
+                }
+                // Adicionar espaçamento entre os labels
+                if (index > 0) {
+                  label.y += 10; // Ajuste o valor conforme necessário
+                }
+              });
+              return labels;
+            },
           },
           tooltip: {
             backgroundColor: "rgba(0, 0, 0, 0.8)",
