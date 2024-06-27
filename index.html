@@ -31,66 +31,86 @@
     <div class="container items-center mx-auto p-4 max-w-4xl max-w-screen-xl">
       <div>
         <h1 class="text-2xl font-bold mb-4">Plano de Aposentadoria</h1>
-        <form id="retirement-form" class="space-y-4">
+        <form
+          id="retirement-form"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
           <div>
-            <label for="initial-amount" class="block mb-2">Valor Inicial do Investimento</label>
-            <input
-              min="0"
-              type="text"
-              id="initial-amount"
-              class="w-full p-2 highlight rounded currency-input"
-              inputmode="numeric"
-              placeholder="R$ 0,00"
-              required
-            />
+            <label for="initial-amount" class="block mb-2"
+              >Valor Inicial do Investimento</label
+            >
+            <div id="div_input" class="input-container">
+              <span class="material-icons input-icon">attach_money</span>
+              <input
+                min="0"
+                type="text"
+                id="initial-amount"
+                class="w-full p-2 currency-input"
+                inputmode="numeric"
+                placeholder="R$ 0,00"
+                required
+              />
+            </div>
           </div>
           <div>
             <label for="monthly-amount" class="block mb-2">Valor Mensal</label>
-            <input
-              min="0"
-              type="text"
-              id="monthly-amount"
-              class="w-full p-2 highlight rounded currency-input"
-              inputmode="numeric"
-              placeholder="R$ 0,00"
-              required
-            />
+            <div id="div_input" class="input-container">
+              <span class="material-icons input-icon">calendar_today</span>
+              <input
+                min="0"
+                type="text"
+                id="monthly-amount"
+                class="w-full p-2 currency-input"
+                inputmode="numeric"
+                placeholder="R$ 0,00"
+                required
+              />
+            </div>
           </div>
           <div>
-            <label for="duration" class="block mb-2">Duração (em anos)</label>
-            <input
-              min="0"
-              type="number"
-              id="duration"
-              class="w-full p-2 highlight rounded"
-              inputmode="numeric"
-              placeholder="Duração"
-              required
-            />
+            <label for="duration" class="block mb-2">Duração</label>
+            <div id="div_input" class="input-container">
+              <span class="material-icons input-icon">access_time</span>
+              <input
+                min="0"
+                type="number"
+                id="duration"
+                class="w-full p-2"
+                inputmode="numeric"
+                placeholder="Duração"
+                required
+              />
+              <select id="duration-type" class="select-input">
+                <option value="years">Anos</option>
+                <option value="months">Meses</option>
+              </select>
+            </div>
           </div>
           <div>
-            <label for="interest-rate" class="block mb-2">Taxa de Juros (%)</label>
-            <input
-              min="0"
-              type="number"
-              id="interest-rate"
-              class="w-full p-2 highlight rounded"
-              inputmode="numeric"
-              placeholder="Taxa de Juros"
-              required
-            />
-          </div>
-          <div>
-            <label for="interest-type" class="block mb-2">Tipo de Juros</label>
-            <select id="interest-type" class="w-full p-2 highlight rounded">
-              <option value="annual">Anual</option>
-              <option value="monthly">Mensal</option>
-            </select>
+            <label for="interest-rate" class="block mb-2"
+              >Taxa de Juros (%)</label
+            >
+            <div id="div_input" class="input-container">
+              <span class="material-icons input-icon">percent</span>
+              <input
+                min="0"
+                type="text"
+                id="interest-rate"
+                class="w-full p-2"
+                inputmode="decimal"
+                placeholder="Taxa de Juros"
+                required
+              />
+              <select id="interest-type" class="select-input">
+                <option value="annual">Anual</option>
+                <option value="monthly">Mensal</option>
+              </select>
+            </div>
           </div>
           <button
             id="calculate-retirement"
             type="submit"
-            class="w-full p-2 mt-4 bg-orange-500 text-white rounded highlight"
+            class="w-full p-2 mt-4 bg-orange-500 text-white rounded-lg md:col-span-2"
           >
             Calcular
           </button>
@@ -99,25 +119,29 @@
         <div id="accordion" class="mt-4">
           <button
             id="details_container_button"
-            class="accordion-button w-full p-2 mt-4 bg-orange-500 text-white rounded highlight"
-            style="display: none;"
+            class="accordion-button w-full p-2 mt-4 bg-orange-500 text-white rounded-lg"
+            style="display: none"
           >
             Mostrar Detalhes
           </button>
           <div
-            class="accordion-content hidden p-2 rounded"
+            class="accordion-content hidden p-2 rounded-lg"
             id="details_container"
           >
             <div id="details"></div>
           </div>
         </div>
-        <div class="chart-container" style="position: relative; height: 40vh">
+        <div
+          id="chart-wrapper"
+          class="chart-container mt-4"
+          style="position: relative; height: 40vh"
+        >
           <canvas id="myChart"></canvas>
         </div>
         <button
           id="download-chart"
-          class="download-button mt-4 p-2 bg-orange-500 text-white rounded"
-          style="display: none;"
+          class="download-button mt-4 p-2 bg-orange-500 text-white rounded-lg"
+          style="display: none"
         >
           Download Gráfico
         </button>

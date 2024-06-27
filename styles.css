@@ -13,6 +13,7 @@ label {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.3px;
 }
+
 #result p strong,
 #investment-result p strong {
   border-bottom: 2px solid #fd6f37;
@@ -60,6 +61,7 @@ input {
   font-family: "Montserrat";
   font-weight: 500;
 }
+
 input::placeholder {
   color: rgba(51, 51, 51, 0.76);
 }
@@ -79,11 +81,13 @@ button:focus {
   outline: none;
   box-shadow: none;
 }
+
 label {
   font-weight: 500;
   letter-spacing: 0.3px;
 }
 
+/* Centraliza o conteúdo da tabela */
 .table-auto th,
 .table-auto td {
   vertical-align: middle;
@@ -116,7 +120,7 @@ label {
 }
 
 .download-button {
-  font-family: "inter", sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: #fd6f37;
   color: white;
   padding: 3px 7px;
@@ -132,19 +136,19 @@ label {
   background-color: #e65c25;
 }
 
-/* styles.css */
-
 /* Feedback messages */
 .success-message {
   color: #28a745;
   font-weight: bold;
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .error-message {
   color: #dc3545;
   font-weight: bold;
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 /* Animations */
@@ -167,19 +171,11 @@ label {
   animation: slideDown 0.5s forwards;
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
 .accordion-content.hide {
   animation: slideUp 0.5s forwards;
   max-height: 0;
   opacity: 0;
+  display: none; /* Esconde o conteúdo após a animação */
 }
 
 @keyframes slideUp {
@@ -249,4 +245,49 @@ label {
   display: inline-block;
   margin-right: 8px;
   vertical-align: middle;
+}
+
+/* Estiliza ícones dentro dos campos de entrada */
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #dddddd;
+  overflow: hidden; /* Adicionado para garantir que os elementos não ultrapassem a div */
+}
+
+.input-icon {
+  color: #6d6d6d;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #dddddd;
+}
+
+input[type="text"].currency-input,
+input[type="number"] {
+  border: none;
+  outline: none;
+  font-family: "Montserrat";
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 0;
+  height: 100%;
+}
+
+select {
+  padding: 13px;
+  font-family: "Inter", sans-serif;
+  background: transparent; /* Fundo transparente */
+  color: #585858;
+  height: 100%;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+.accordion-content.show + #chart-wrapper {
+  margin-top: 20px; /* Espaçamento entre a tabela de detalhes e o gráfico */
 }
