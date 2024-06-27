@@ -200,7 +200,7 @@ function displayResults({ details, totalInterest }) {
         <p class="montserrat">Total de juros acumulados: <br><strong>${totalInterest.toLocaleString(
           "pt-BR",
           { style: "currency", currency: "BRL" }
-        )}</strong>.</p>
+        )}</strong></p>
       </div>
     </div>`;
 
