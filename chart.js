@@ -52,135 +52,149 @@ function displayGraph(details) {
     ],
   };
 
-  new Chart(ctx, {
-    type: "line",
-    data: chartData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: "index",
-        intersect: false,
-      },
-      stacked: false,
-      scales: {
-        x: {
-          ticks: {
-            maxRotation: 0,
-            minRotation: 0,
-            font: {
-              family: "Inter", // Define the font family to Inter
+  function createChartConfig(isMobile) {
+    return {
+      type: "line",
+      data: chartData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "index",
+          intersect: false,
+        },
+        stacked: false,
+        scales: {
+          x: {
+            ticks: {
+              maxRotation: isMobile ? 90 : 0,
+              minRotation: isMobile ? 90 : 0,
+              font: {
+                family: "Inter", // Define the font family to Inter
+              },
             },
           },
-        },
-        y: {
-          type: "linear",
-          display: true,
-          position: "left",
-          title: {
+          y: {
+            type: "linear",
             display: true,
-            text: "Valor (R$)",
-            font: {
-              family: "Inter",
-              size: 14, // Increase the font size
+            position: "left",
+            title: {
+              display: true,
+              text: "Valor (R$)",
+              font: {
+                family: "Inter",
+                size: 14, // Increase the font size
+              },
+            },
+            ticks: {
+              font: {
+                family: "Inter", // Define the font family to Inter
+              },
             },
           },
-          ticks: {
-            font: {
-              family: "Inter", // Define the font family to Inter
-            },
-          },
-        },
-        y1: {
-          type: "linear",
-          display: true,
-          position: "right",
-          title: {
+          y1: {
+            type: "linear",
             display: true,
-            text: "Juros (R$)",
-            font: {
-              family: "Inter",
-              size: 14, // Increase the font size
+            position: "right",
+            title: {
+              display: true,
+              text: "Juros (R$)",
+              font: {
+                family: "Inter",
+                size: 14, // Increase the font size
+              },
             },
-          },
-          grid: {
-            drawOnChartArea: false,
-          },
-          ticks: {
-            font: {
-              family: "Inter", // Define the font family to Inter
+            grid: {
+              drawOnChartArea: false,
             },
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          display: true,
-          labels: {
-            boxWidth: 15,
-            boxHeight: 15,
-            font: {
-              family: "Inter", // Define the font family to Inter
-              size: 14, // Increase the font size
+            ticks: {
+              font: {
+                family: "Inter", // Define the font family to Inter
+              },
             },
           },
         },
-        tooltip: {
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          titleColor: "rgba(255, 255, 255, 1)",
-          bodyColor: "rgba(255, 255, 255, 1)",
-          borderColor: "rgba(255, 255, 255, 1)",
-          borderWidth: 1,
-          padding: {
-            top: 10,
-            right: 15,
-            bottom: 10,
-            left: 15,
-          },
-          itemSpacing: 10,
-          callbacks: {
-            label: function (context) {
-              let label = context.dataset.label || "";
-              if (label) {
-                label += ": ";
-              }
-              if (context.dataset.label === "Juros Acumulados (Mês)") {
-                const totalInterest =
-                  accumulatedInterestValues[context.dataIndex];
-                label += context.parsed.y.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                });
-                label += ` (Total: ${totalInterest.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })})`;
-              } else {
-                label += context.parsed.y.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                });
-              }
-              return label;
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+              boxWidth: 15,
+              boxHeight: 15,
+              font: {
+                family: "Inter", // Define the font family to Inter
+                size: 14, // Increase the font size
+              },
+              padding: isMobile ? 10 : 0,
             },
           },
-        },
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: "xy",
+          tooltip: {
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            titleColor: "rgba(255, 255, 255, 1)",
+            bodyColor: "rgba(255, 255, 255, 1)",
+            borderColor: "rgba(255, 255, 255, 1)",
+            borderWidth: 1,
+            padding: {
+              top: 10,
+              right: 15,
+              bottom: 10,
+              left: 15,
+            },
+            itemSpacing: 10,
+            callbacks: {
+              label: function (context) {
+                let label = context.dataset.label || "";
+                if (label) {
+                  label += ": ";
+                }
+                if (context.dataset.label === "Juros Acumulados (Mês)") {
+                  const totalInterest =
+                    accumulatedInterestValues[context.dataIndex];
+                  label += context.parsed.y.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  });
+                  label += ` (Total: ${totalInterest.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })})`;
+                } else {
+                  label += context.parsed.y.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  });
+                }
+                return label;
+              },
+            },
           },
           zoom: {
-            wheel: {
+            pan: {
               enabled: true,
+              mode: "xy",
             },
-            pinch: {
-              enabled: true,
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: "xy",
             },
-            mode: "xy",
           },
         },
       },
-    },
+    };
+  }
+
+  let chartInstance = new Chart(
+    ctx,
+    createChartConfig(window.innerWidth <= 768)
+  );
+
+  window.addEventListener("resize", function () {
+    const isMobile = window.innerWidth <= 768;
+    chartInstance.destroy();
+    chartInstance = new Chart(ctx, createChartConfig(isMobile));
   });
 }
