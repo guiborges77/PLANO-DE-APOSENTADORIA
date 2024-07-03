@@ -138,17 +138,24 @@
         >
           <canvas id="myChart"></canvas>
         </div>
-        <button
-          id="download-chart"
-          class="download-button mt-4 p-2 bg-orange-500 text-white rounded-lg"
-          style="display: none"
-        >
-          Download Gráfico
-        </button>
+        <div class="flex items-center space-x-4 mt-8">
+          <button
+            id="download-chart"
+            class="download-button p-2 bg-orange-500 text-white rounded-lg"
+            style="display: none"
+          >
+            Download Gráfico
+          </button>
+          <select id="file-type" class="form-select p-2 rounded-lg" style="display: none">
+            <option value="csv">CSV</option>
+            <option value="xlsx">XLSX</option>
+          </select>
+        </div>
+        
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="inputs.js"></script>
     <script src="chart.js"></script>
   </body>

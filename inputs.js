@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const accordionContent = document.querySelector(".accordion-content");
   const resultDiv = document.getElementById("result");
   const interestRateInput = document.getElementById("interest-rate");
+  const downloadButton = document.getElementById("download-chart");
+  const fileTypeSelect = document.getElementById("file-type");
 
   inputs.forEach((input) => {
     input.addEventListener("input", function () {
@@ -46,6 +48,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   interestRateInput.addEventListener("input", function () {
     this.value = this.value.replace(/[^0-9.,]/g, "");
+  });
+
+  downloadButton.addEventListener("click", function () {
+    const details = calculateRetirement().details;
+    const fileType = fileTypeSelect.value;
+    if (fileType === "xlsx") {
+      exportToXLSX(details);
+    } else if (fileType === "csv") {
+      exportToCSV(details);
+    }
   });
 
   function formatCurrencyInput(input) {
@@ -95,7 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function showDownloadButton() {
-    document.getElementById("download-chart").style.display = "block";
+    downloadButton.style.display = "block";
+    fileTypeSelect.style.display = "block";
   }
 
   function adjustChartPosition() {
@@ -106,133 +119,193 @@ document.addEventListener("DOMContentLoaded", function () {
       chartWrapper.style.marginTop = "0";
     }
   }
-});
 
-function calculateRetirement() {
-  const initialAmount = parseFloat(
-    document
-      .getElementById("initial-amount")
-      .value.replace(/[R$\s.]/g, "")
-      .replace(",", ".")
-  );
-  const monthlyAmount = parseFloat(
-    document
-      .getElementById("monthly-amount")
-      .value.replace(/[R$\s.]/g, "")
-      .replace(",", ".")
-  );
-  const duration = parseFloat(document.getElementById("duration").value);
-  const durationType = document.getElementById("duration-type").value;
-  const interestRateInput = parseFloat(
-    document.getElementById("interest-rate").value.replace(",", ".")
-  );
-  const interestType = document.getElementById("interest-type").value;
-  const interestRate =
-    interestType === "annual"
-      ? interestRateInput / 12 / 100
-      : interestRateInput / 100;
+  function calculateRetirement() {
+    const initialAmount = parseFloat(
+      document
+        .getElementById("initial-amount")
+        .value.replace(/[R$\s.]/g, "")
+        .replace(",", ".")
+    );
+    const monthlyAmount = parseFloat(
+      document
+        .getElementById("monthly-amount")
+        .value.replace(/[R$\s.]/g, "")
+        .replace(",", ".")
+    );
+    const duration = parseFloat(document.getElementById("duration").value);
+    const durationType = document.getElementById("duration-type").value;
+    const interestRateInput = parseFloat(
+      document.getElementById("interest-rate").value.replace(",", ".")
+    );
+    const interestType = document.getElementById("interest-type").value;
+    const interestRate =
+      interestType === "annual"
+        ? interestRateInput / 12 / 100
+        : interestRateInput / 100;
 
-  let totalAmount = initialAmount;
-  let totalInvested = initialAmount; // Inicializa o total investido com o valor inicial
-  const months = durationType === "years" ? duration * 12 : duration;
-  let details = [];
-  let totalInterest = 0;
+    let totalAmount = initialAmount;
+    let totalInvested = initialAmount; // Inicializa o total investido com o valor inicial
+    const months = durationType === "years" ? duration * 12 : duration;
+    let details = [];
+    let totalInterest = 0;
 
-  for (let i = 0; i < months; i++) {
-    const aporte = i === 0 ? initialAmount + monthlyAmount : monthlyAmount;
-    totalAmount += i === 0 ? monthlyAmount : aporte;
-    totalInvested += i === 0 ? monthlyAmount : aporte; // Adiciona o aporte ao total investido
-    const interest =
-      totalAmount * (interestRate / (interestType === "annual" ? 1 : 1));
-    totalAmount += interest;
-    totalInterest += interest;
-    details.push({
-      month: i + 1,
-      aporte: aporte.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }),
-      juros: interest.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }),
-      totalInvestido: totalInvested.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }),
-      total: totalAmount.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }),
-    });
+    for (let i = 0; i < months; i++) {
+      const aporte = i === 0 ? initialAmount + monthlyAmount : monthlyAmount;
+      totalAmount += i === 0 ? monthlyAmount : aporte;
+      totalInvested += i === 0 ? monthlyAmount : aporte; // Adiciona o aporte ao total investido
+      const interest =
+        totalAmount * (interestRate / (interestType === "annual" ? 1 : 1));
+      totalAmount += interest;
+      totalInterest += interest;
+      details.push({
+        month: i + 1,
+        aporte: aporte.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }),
+        juros: interest.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }),
+        totalInvestido: totalInvested.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }),
+        total: totalAmount.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }),
+      });
+    }
+
+    return { details, totalInterest };
   }
 
-  return { details, totalInterest };
-}
+  function displayResults({ details, totalInterest }) {
+    const resultDiv = document.getElementById("result");
+    const totalAmount = details[details.length - 1].total;
+    const interestRateInput = parseFloat(
+      document.getElementById("interest-rate").value.replace(",", ".")
+    );
+    const interestType = document.getElementById("interest-type").value;
+    const monthlyRate =
+      interestType === "annual" ? interestRateInput / 12 : interestRateInput;
+    const monthlyReturn =
+      parseFloat(totalAmount.replace(/[R$\s.]/g, "").replace(",", ".")) *
+      (monthlyRate / 100);
 
-function displayResults({ details, totalInterest }) {
-  const resultDiv = document.getElementById("result");
-  const totalAmount = details[details.length - 1].total;
-  const interestRateInput = parseFloat(
-    document.getElementById("interest-rate").value.replace(",", ".")
-  );
-  const interestType = document.getElementById("interest-type").value;
-  const monthlyRate =
-    interestType === "annual" ? interestRateInput / 12 : interestRateInput;
-  const monthlyReturn =
-    parseFloat(totalAmount.replace(/[R$\s.]/g, "").replace(",", ".")) *
-    (monthlyRate / 100);
+    resultDiv.innerHTML = `
+      <div class="result-block-container">
+        <div class="result-block">
+          <p class="montserrat"><span class="icon material-icons">attach_money</span>Valor Total: <br><strong>${totalAmount}</strong></p>
+        </div>
+        <div class="result-block">
+          <p class="montserrat"><span class="icon material-icons">trending_up</span>Rendimento Mensal (${monthlyRate.toFixed(
+            2
+          )}% ao mês): <br><strong>${monthlyReturn.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    })}</strong></p>
+        </div>
+        <div class="result-block">
+          <p class="montserrat">Total de juros acumulados: <br><strong>${totalInterest.toLocaleString(
+            "pt-BR",
+            { style: "currency", currency: "BRL" }
+          )}</strong></p>
+        </div>
+      </div>`;
 
-  resultDiv.innerHTML = `
-    <div class="result-block-container">
-      <div class="result-block">
-        <p class="montserrat"><span class="icon material-icons">attach_money</span>Valor Total: <br><strong>${totalAmount}</strong></p>
-      </div>
-      <div class="result-block">
-        <p class="montserrat"><span class="icon material-icons">trending_up</span>Rendimento Mensal (${monthlyRate.toFixed(
-          2
-        )}% ao mês): <br><strong>${monthlyReturn.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  })}</strong></p>
-      </div>
-      <div class="result-block">
-        <p class="montserrat">Total de juros acumulados: <br><strong>${totalInterest.toLocaleString(
-          "pt-BR",
-          { style: "currency", currency: "BRL" }
-        )}</strong></p>
-      </div>
-    </div>`;
+    let detailsHTML = `
+      <div class="overflow-x-auto">
+        <table class="table-auto w-full text-xs md:text-sm">
+          <thead>
+            <tr>
+              <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">calendar_today</span>Mês</th>
+              <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">attach_money</span>Aporte</th>
+              <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">bar_chart</span>Juros</th>
+              <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">account_balance_wallet</span>Total Investido</th>
+              <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">equalizer</span>Total</th>
+            </tr>
+          </thead>
+          <tbody>`;
 
-  let detailsHTML = `
-    <div class="overflow-x-auto">
-      <table class="table-auto w-full text-xs md:text-sm">
-        <thead>
-          <tr>
-            <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">calendar_today</span>Mês</th>
-            <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">attach_money</span>Aporte</th>
-            <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">bar_chart</span>Juros</th>
-            <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">account_balance_wallet</span>Total Investido</th>
-            <th class="px-1 py-1 md:px-4 md:py-2"><span class="icon material-icons">equalizer</span>Total</th>
-          </tr>
-        </thead>
-        <tbody>`;
+    details.forEach((detail) => {
+      detailsHTML += `
+        <tr>
+          <td class="border px-1 py-1 md:px-4 md:py-2">${detail.month}</td>
+          <td class="border px-1 py-1 md:px-4 md:py-2">${detail.aporte}</td>
+          <td class="border px-1 py-1 md:px-4 md:py-2">${detail.juros}</td>
+          <td class="border px-1 py-1 md:px-4 md:py-2">${detail.totalInvestido}</td>
+          <td class="border px-1 py-1 md:px-4 md:py-2">${detail.total}</td>
+        </tr>`;
+    });
 
-  details.forEach((detail) => {
     detailsHTML += `
-      <tr>
-        <td class="border px-1 py-1 md:px-4 md:py-2">${detail.month}</td>
-        <td class="border px-1 py-1 md:px-4 md:py-2">${detail.aporte}</td>
-        <td class="border px-1 py-1 md:px-4 md:py-2">${detail.juros}</td>
-        <td class="border px-1 py-1 md:px-4 md:py-2">${detail.totalInvestido}</td>
-        <td class="border px-1 py-1 md:px-4 md:py-2">${detail.total}</td>
-      </tr>`;
-  });
+          </tbody>
+        </table>
+      </div>`;
 
-  detailsHTML += `
-        </tbody>
-      </table>
-    </div>`;
+    document.getElementById("details").innerHTML = detailsHTML;
+  }
 
-  document.getElementById("details").innerHTML = detailsHTML;
-}
+  function exportToCSV(details) {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Mês,Aporte,Juros,Total Investido,Total\n";
+
+    details.forEach((detail) => {
+      const row = [
+        detail.month,
+        detail.aporte.replace(/[R$\s.]/g, "").replace(",", "."),
+        detail.juros.replace(/[R$\s.]/g, "").replace(",", "."),
+        detail.totalInvestido.replace(/[R$\s.]/g, "").replace(",", "."),
+        detail.total.replace(/[R$\s.]/g, "").replace(",", "."),
+      ].join(",");
+      csvContent += row + "\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const newWindow = window.open();
+    newWindow.document.write("<pre>" + csvContent + "</pre>");
+    newWindow.document.write(
+      '<button onclick="downloadCSV()">Download CSV</button>'
+    );
+    newWindow.downloadCSV = function () {
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "investimentos.csv");
+      link.click();
+    };
+  }
+
+  function exportToXLSX(details) {
+    const ws = XLSX.utils.json_to_sheet(details);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Investimentos");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+
+    function s2ab(s) {
+      const buf = new ArrayBuffer(s.length);
+      const view = new Uint8Array(buf);
+      for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+      return buf;
+    }
+
+    const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+    const url = URL.createObjectURL(blob);
+
+    const newWindow = window.open();
+    const link = newWindow.document.createElement("a");
+    link.href = url;
+    link.innerText = "Download XLSX";
+    link.download = "investimentos.xlsx";
+    newWindow.document.body.appendChild(link);
+    newWindow.document.write(
+      '<button onclick="downloadXLSX()">Download XLSX</button>'
+    );
+    newWindow.downloadXLSX = function () {
+      link.click();
+    };
+  }
+});
