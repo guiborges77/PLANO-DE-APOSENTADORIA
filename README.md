@@ -14,3 +14,5 @@ Esta é uma calculadora de juros compostos desenvolvida para ajudar no planejame
 - **Saída de Dados**:
   - Gráfico mostrando o crescimento do investimento ao longo do tempo
   - Tabela detalhada com os valores dos aportes e dos juros acumulados
+
+CONFIRA O PROJETO: https://planodeaposentadoria.netlify.app/
